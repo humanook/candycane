@@ -1,0 +1,13 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Model\Entity;
+
+use Cake\ORM\Entity;
+
+/**
+ * Setting Entity
+ */
+class Setting extends Entity
+{
+}
