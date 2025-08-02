@@ -2,7 +2,6 @@
 /**
  *
  * @var \App\View\AppView $this
- * @var array $currentuser
  */
 $topMenus = [
     [
@@ -21,7 +20,7 @@ $topMenus = [
         'title'=>__('label_project'),
         'url'=>['controller'=>'Projects','action'=>'index'],
         'class'=>'projects',
-        'scope'=>'private',
+        'scope'=>'public',
     ],
     [
         'title'=>__('label_administration'),
@@ -46,7 +45,9 @@ $topMenus = [
     <?php else : ?>
         <ul>
             <li><?= $this->Html->link(__('label_login'), ['controller'=>'Account','action'=>'login'], ['class' => 'login']); ?></li>
+            <?php if( $this->CandySetting->isSelfRegistration() ): ?>
             <li><?= $this->Html->link(__('label_register'), ['controller'=>'Account','action'=>'register'], ['class' => 'register']); ?></li>
+            <?php endif; ?>
         </ul>
     <?php endif; ?>
 </div>

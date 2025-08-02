@@ -3,14 +3,10 @@ declare(strict_types=1);
 use Cake\Core\Configure;
 
 /**
- *
- *  app/views/layouts/base.html.erb
+ * default layout
  *
  * @var \App\View\AppView $this
- * @var string $current_language language of HTML Content
- * @var string $title_for_layout title of Page
  */
-
 $appTitle = Configure::read('CandyCane.app_title');
 ?>
 <!DOCTYPE html>
@@ -25,21 +21,46 @@ $appTitle = Configure::read('CandyCane.app_title');
     echo $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken'));
     echo $this->Html->meta('icon');
     echo $this->fetch('meta');
-    echo $this->Html->css(['tribute','application','responsive']);
-    echo $this->element('ui_theme');
-    echo $this->Html->script(['prototype','effects','dragdrop','controls','application']);
-    //echo $this->Html->script('https://raw.github.com/cognitom/StaffRoll.net-Libraries-and-Themes/master/include.staffroll.net/github/script/1.0/load.js?theme=underground');
-    echo $this->Html->css('jstoolbar');
-    if (isset($header_tags)) {
-        echo $header_tags;
+    echo $this->Html->css(['jquery/jquery-ui-1.13.2','tribute-5.1.3','application','responsive'],['timestamp'=>true]);
+    $uiTheme = $this->CandySetting->getThemeUI();
+    if ( !empty( $uiTheme ) )
+    {
+        $css = '../themed/' . $uiTheme . '/css/application.css';
+        echo $this->Html->css( $css ,['fullBase'=>true]);
     }
+    echo $this->Html->script(['jquery-3.6.1-ui-1.13.2-ujs-6.1.7','tribute-5.1.3.min','tablesort-5.2.1.min','tablesort-5.2.1.number.min','application','responsive']);
+    echo $this->Html->css('jstoolbar');
+    echo $this->fetch('headers');
     echo $this->fetch('css');
+    echo $this->fetch('script');
     ?>
-<?php echo $this->fetch('script'); ?>
 </head>
 <body>
 <div id="wrapper">
     <div class="flyout-menu js-flyout-menu">
+        <div class="flyout-menu__search">
+            <?php
+            $options = [
+                'action' => ['controller' => 'Search','action' => 'index'],
+                'type' => 'get',
+            ];
+            echo $this->Form->create(null, $options);
+            echo '<label class="search-magnifier search-magnifier--flyout" for="flyout-search">&#9906;';
+            echo '</label>';
+            echo $this->Form->text('q', [
+                'id' => 'flyout-search',
+                'class' => 'small js-search-input',
+                'placeholder' => __('label_search'),
+                'label' => false,
+            ]);
+            echo $this->Form->end();
+            ?>
+        </div>
+        <h3><?= __('label_general') ?></h3>
+        <span class="js-general-menu"></span>
+        <span class="js-sidebar flyout-menu__sidebar"></span>
+        <h4><?= __('label_profile') ?></h4>
+        <span class="js-profile-menu"></span>
     </div>
 
     <div id="top-menu">
@@ -51,23 +72,50 @@ $appTitle = Configure::read('CandyCane.app_title');
         <div id="quick-search">
             <?php
             $options = [
-                'action' => ['controller' => 'search','action' => 'index'],
+                'action' => ['controller' => 'Search','action' => 'index'],
                 'type' => 'get',
-                'id' => 'searchForm',
             ];
             echo $this->Form->create(null, $options);
-            echo $this->Html->link(__('Search') . ':', '/search/index', ['accesskey' => 4]);
+            echo '<label for="q">';
+            echo $this->Html->link(__('label_search') , ['controller' => 'Search','action' => 'index'], ['accesskey' => 4]);
+            echo ': </label>';
             echo $this->Form->text('q', [
+                'id' => 'q',
                 'size' => 20,
                 'class' => 'small',
+                'data-auto-complete' => 'true',
+                'data-tribute' => 'true',
                 'accesskey' => 'f',
                 'label' => false,
             ]);
             echo $this->Form->end();
             ?>
-            <?php if ($this->CandyUser->hasMemberships()) : ?>
-                <?php echo $this->element('project_selector'); ?>
-            <?php endif; ?>
+            <div id="project-jump" class="drdn">
+                <span class="drdn-trigger"><?= __('label_jump_to_a_project') ?></span>
+                <div class="drdn-content">
+                    <div class="quick-search">
+                        <?php
+                        echo $this->Form->text('q', [
+                            'id' => 'projects-quick-search',
+                            'value' => '',
+                            'class' => 'autocomplete',
+                            'autocomplete' => 'off',
+                            'data-value-was' => '',
+                            'label' => false,
+                        ])
+                        ?>
+                    </div>
+                    <div class="drdn-items projects selection">
+                        <?php if ($this->CandyUser->hasMemberships()) : ?>
+                            <?php echo $this->element('project_selector'); ?>
+                        <?php endif; ?>
+                    </div>
+                    <div class="drdn-items all-projects selection">
+                        <?= __('label_project_all') ?>
+                    </div>
+                </div>
+
+            </div>
         </div>
         <h1><?= $this->fetch('title_for_layout', $appTitle);?></h1>
 
@@ -87,11 +135,10 @@ $appTitle = Configure::read('CandyCane.app_title');
             </div>
         <?php endif; ?>
     </div>
-    <div id="main" class="<?= isset($Sidebar) ? '' : 'nosidebar' ?>">
+    <?php $sideBarContent = $this->fetch('sidebar',''); ?>
+    <div id="main" class="<?= $this->exists('sidebar') ? '' : 'nosidebar' ?>">
         <div id="sidebar">
-            <?php if (isset($Sidebar)) {
-                echo $this->element('sidebar', ['Sidebar' => $Sidebar]);
-            }?>
+            <?= $this->fetch('sidebar','') ?>
         </div>
         <div id="content">
             <?php echo $this->Flash->render(); ?>
