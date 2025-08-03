@@ -7,10 +7,10 @@ use Cake\Core\Configure;
  *
  * @var \App\View\AppView $this
  */
-$appTitle = Configure::read('CandyCane.app_title');
+$appTitle = $this->CandySetting->getConfig('app_title',"");
 ?>
 <!DOCTYPE html>
-<html lang="<?= Configure::read('CandyCane.default_language') ?>">
+<html lang="<?= $this->CandySetting->getConfig('default_language') ?>">
 <head>
     <?= $this->Html->charset() ?>
     <title><?php echo $this->fetch('title_for_layout', $appTitle); ?></title>
