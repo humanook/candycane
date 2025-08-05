@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Authentication\PasswordHasher;
+namespace App\Authentication\PasswordHasher;
 
 use Authentication\PasswordHasher\AbstractPasswordHasher;
 

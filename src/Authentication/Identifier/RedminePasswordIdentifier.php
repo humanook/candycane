@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Authentication\Identifier;
+namespace App\Authentication\Identifier;
 
-use App\Controller\Authentication\PasswordHasher\RedminePasswordHasher;
+use App\Authentication\PasswordHasher\RedminePasswordHasher;
 use Authentication\Identifier\PasswordIdentifier;
 
 class RedminePasswordIdentifier extends PasswordIdentifier

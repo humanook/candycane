@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Controller\Authentication;
+namespace App\Authentication;
 
-use App\Controller\Authentication\Identifier\RedminePasswordIdentifier;
-use App\Controller\Authentication\PasswordHasher\RedminePasswordHasher;
+use App\Authentication\Identifier\RedminePasswordIdentifier;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
@@ -12,19 +11,20 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class CandyCaneAuthenticationService implements AuthenticationServiceProviderInterface
 {
+    /**
+     * @param ServerRequestInterface $request
+     * @return AuthenticationServiceInterface
+     */
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
         $loginUrl = Router::url(['controller' => 'Account', 'action' => 'login']);
         $authenticationService = new AuthenticationService([
-            'identityClass' => CandyCaneIdentity::class,
             'unauthenticatedRedirect' => $loginUrl,
             'queryParam' => 'redirect',
         ]);
 
         // identifiers を読み込み、email と password のフィールドを確認します
-        $authenticationService->loadIdentifier(RedminePasswordIdentifier::class, [
-            //'className' => 'RedminePasswordIdentifier',
-        ]);
+        $authenticationService->loadIdentifier(RedminePasswordIdentifier::class);
 
         //  authenticatorsをロードしたら, 最初にセッションが必要です
         $authenticationService->loadAuthenticator('Authentication.Session');
