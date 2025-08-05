@@ -8,14 +8,23 @@ use Cake\Core\Configure;
 class CandySettingHelper extends AppHelper
 {
     /**
+     * @param string $key
+     * @param mixed|null $default
+     * @return mixed
+     */
+    public function getAppConfig(string $key, mixed $default = null): mixed
+    {
+        return Configure::read("CandyCaneSettings.$key", $default);
+    }
+
+    /**
      * UI テーマ名 を取得する
      *
      * @return string
      */
     public function getThemeUI():string
     {
-        $ret = '';
-        return $ret;
+        return $this->getAppConfig('ui_theme', 'default');
     }
 
     public function getSelfRegistration():string
@@ -33,16 +42,6 @@ class CandySettingHelper extends AppHelper
         if( $value != 0 ) {
             $ret = true;
         }
-        return $ret;
-    }
-
-    public function getFormatAsString(string $format,$options = []):string
-    {
-        $ret = $format;
-        foreach($options as $key=>$value) {
-            $ret = str_replace('%{'.$key.'}',$value,$ret);
-        }
-        preg_replace('/%{(.*)}/','',$ret);
         return $ret;
     }
 }
