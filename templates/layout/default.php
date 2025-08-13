@@ -13,7 +13,7 @@ $appTitle = $this->CandySetting->getAppConfig('app_title',"");
 <html lang="<?= $this->CandySetting->getAppConfig('default_language') ?>">
 <head>
     <?= $this->Html->charset() ?>
-    <title><?php echo $this->fetch('title_for_layout', $appTitle); ?></title>
+    <title><?= $this->CandyView->getPageMetaTitle($appTitle); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="<?= $appTitle ?>" />
     <meta name="keywords" content="issue,bug,tracker" />
@@ -117,7 +117,7 @@ $appTitle = $this->CandySetting->getAppConfig('app_title',"");
 
             </div>
         </div>
-        <h1><?= $this->fetch('title_for_layout', $appTitle);?></h1>
+        <h1><?= $this->CandyView->getPageHeaderTitle($appTitle);?></h1>
 
         <?php if (!empty($main_menu)) :?>
             <div id="main-menu">

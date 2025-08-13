@@ -29,4 +29,50 @@ class CandyViewHelper extends Helper
         }
         return $text;
     }
+
+    /**
+     * @param string $defaultTitle
+     * @return string
+     */
+    public function getPageMetaTitle(string $defaultTitle):string
+    {
+        $title = $this->getView()->fetch('title_for_layout','');
+        if (empty($title) === false)
+        {
+            $title = $title . ' - ' . $defaultTitle;
+        }
+        else
+        {
+            $title = $defaultTitle;
+        }
+        return $title;
+    }
+
+    /**
+     * @param string $title
+     * @return void
+     */
+    public function setPageMetaTitle(string $title): void
+    {
+        $this->getView()->assign('title_for_layout', $title);
+    }
+
+    /**
+     * @param string $defaultTitle
+     * @return string
+     */
+    public function getPageHeaderTitle(string $defaultTitle):string
+    {
+        return $this->getView()->fetch('title_for_header',$defaultTitle);
+    }
+
+
+    /**
+     * @param string $title
+     * @return void
+     */
+    public function setPageHeaderTitle(string $title): void
+    {
+        $this->getView()->assign('title_for_header', $title);
+    }
 }
