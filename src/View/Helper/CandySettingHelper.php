@@ -43,6 +43,14 @@ class CandySettingHelper extends AppHelper
     /**
      * @return bool
      */
+    public function isAutoLoginRequired():bool
+    {
+        return $this->getAppConfig('autologin',false);
+    }
+
+    /**
+     * @return bool
+     */
     public function isSelfRegistration():bool
     {
         $ret = false;
