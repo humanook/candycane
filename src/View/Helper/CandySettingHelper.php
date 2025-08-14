@@ -29,7 +29,15 @@ class CandySettingHelper extends AppHelper
 
     public function getSelfRegistration():string
     {
-        return Configure::read('CandyCaneSettings.self_registration');
+        return $this->getAppConfig('self_registration',false);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLostPasswordRequired():bool
+    {
+        return $this->getAppConfig('lost_password',false);
     }
 
     /**
