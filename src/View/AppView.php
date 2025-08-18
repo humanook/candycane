@@ -43,6 +43,11 @@ class AppView extends View
     public function initialize(): void
     {
         parent::initialize();
+
+        $formTemplates = [
+            'submitContainer' => '{{content}}',
+        ];
+        $this->Form->setTemplates($formTemplates);
         $currentUser = $this->get('currentUser', null);
         $this->CandyTopMenu = $this->loadHelper('CandyTopMenu');
         $this->CandySetting = $this->loadHelper('CandySetting');
