@@ -13,8 +13,6 @@ use Cake\ORM\Table;
  */
 class WelcomeController extends AppController
 {
-    public $uses = ['User', 'News', 'Project'];
-
     /**
      * @var \App\Model\Table\NewsTable|\Cake\ORM\Table
      */
@@ -32,7 +30,7 @@ class WelcomeController extends AppController
     }
 
     /**
-     * @param EventInterface $event
+     * @param \Cake\Event\EventInterface $event
      * @return void
      */
     public function beforeFilter(EventInterface $event): void
@@ -46,8 +44,11 @@ class WelcomeController extends AppController
      */
     public function index(): Response
     {
-//        $this->set('news', $this->News->latest($this->current_user));
-//        $this->set('projects', $this->Project->latest($this->current_user));
+        $newsEntities = [];
+        if ($this->isLoggIn() === true) {
+            $newsEntities = $this->News->getLatest($this->currentUser);
+        }
+        $this->set(compact('newsEntities'));
 
         return $this->render();
     }

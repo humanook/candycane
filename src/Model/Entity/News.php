@@ -39,6 +39,14 @@ class News extends Entity
     }
 
     /**
+     * @return User
+     */
+    public function getAuthorUserEntity(): User
+    {
+        return $this->get('author');
+    }
+
+    /**
      * @return string
      */
     public function getAuthorFullName(): string
@@ -51,5 +59,17 @@ class News extends Entity
             Log::debug($ex->getMessage());
         }
         return $ret;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasComments(): bool
+    {
+        $entities = $this->get('comments');
+        if (is_array($entities) && count($entities) > 0) {
+            return true;
+        }
+        return false;
     }
 }
