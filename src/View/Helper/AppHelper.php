@@ -14,6 +14,7 @@ class AppHelper extends Helper
 {
     /**
      * initialize
+     *
      * @param array $config
      * @return void
      */
@@ -22,4 +23,21 @@ class AppHelper extends Helper
         parent::initialize($config);
     }
 
+    /**
+     * @param string $text
+     * @return array
+     */
+    protected function parseWrapWord(string $text): array
+    {
+        if (str_contains($text, '|') === true) {
+            $tags = explode('|', $text, 2);
+            if (count($tags) === 1) {
+                $tags[] = '';
+            }
+        } else {
+            $tags = [$text, ''];
+        }
+
+        return $tags;
+    }
 }
