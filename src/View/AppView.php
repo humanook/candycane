@@ -28,6 +28,7 @@ use Cake\View\View;
  * @property \App\View\Helper\CandyUserHelper $CandyUser
  * @property \App\View\Helper\CandyViewHelper $CandyView
  * @property \App\View\Helper\CandyHelper $Candy
+ * @property \App\View\Helper\ProjectHelper $Project
  */
 class AppView extends View
 {
